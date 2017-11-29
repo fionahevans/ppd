@@ -1,0 +1,20 @@
+Package: ppd
+Version: 1.0
+Date: 2017-08-28
+Title: Functions for accessing & handling SILO Patched Point weather data.
+Author: Fiona H Evans <fiona.h.evans@graduate.uwa.edu.au>
+Maintainer: Fiona H Evans <fiona.h.evans@graduate.uwa.edu.au>
+Depends:
+    R (>= 3.0.0)
+Imports:
+    httr
+Description: This package contains functions for accessing & handling SILO Patched Point weather data.
+License: GPL (>= 2)
+URL: http://www.r-project.org
+LazyData: TRUE
+Collate:
+  'getPPD.R'
+  'getClimatology.R'
+  'nearestStations.R'
+  'STATIONS.R'
+RoxygenNote: 6.0.1
