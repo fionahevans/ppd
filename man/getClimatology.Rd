@@ -4,8 +4,7 @@
 \alias{getClimatology}
 \title{Download PPD data and store climatology}
 \usage{
-getClimatology(id, start.year, end.year, username = "MUEVANS",
-  password = "FIONA6151")
+getClimatology(id, start.year, end.year, username, password)
 }
 \arguments{
 \item{id}{Weather station ID.}

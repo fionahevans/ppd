@@ -4,7 +4,7 @@
 \alias{getPPD}
 \title{Download PPD data}
 \usage{
-getPPD(id, start, end, username = "MUEVANS", password = "FIONA6151")
+getPPD(id, start, end, username, password)
 }
 \arguments{
 \item{id}{Weather station ID.}
