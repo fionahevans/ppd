@@ -1,5 +1,5 @@
 
-#' Download PPD data
+#' Convert PPD data to APSIM .met file
 #' 
 #' Download PPD data for a station and return as a data frame
 #'
@@ -13,9 +13,9 @@
 #' 
 #' @return Data frame containing daily weather data.
 #' @export
-getPPD <- function(id, start, end, username, password) {
+apsimMET <- function(id, start, end, username, password) {
   
-  url <- paste0("https://legacy.longpaddock.qld.gov.au/cgi-bin/silo/PatchedPointDataset.php",
+  url <- paste0("https://www.longpaddock.qld.gov.au/cgi-bin/silo/PatchedPointDataset.php",
                 "?username=", username, "&password=", password)
   
   

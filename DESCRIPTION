@@ -13,6 +13,7 @@ License: GPL (>= 2)
 URL: http://www.r-project.org
 LazyData: TRUE
 Collate:
+  'apsimMET.R'
   'getPPD.R'
   'getClimatology.R'
   'nearestStations.R'
