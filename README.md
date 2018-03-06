@@ -12,6 +12,7 @@ Functions:
 
 Planned future functionality:
 * function getClimatology is in development - do not use
+* functions for downloading daily DPIRD rain radar data
 *	ability to download filled daily DPIRD weather station data via API (APIs not yet released)
 *	ability to download DPIRD soil data via API and insert into .apsim files (APIs not yet released)
 
