@@ -10,4 +10,10 @@ Functions:
 * getPPD: Download PPD data fromSILO and store as a data frame
 * apsimMET: Convert downloaded PPD data to APSIM .met file
 
-Function getClimatology is in development - do not use.
+Planned future functionality:
+* function getClimatology is in development - do not use
+*	ability to download filled daily DPIRD weather station data via API (APIs not yet released)
+*	ability to download DPIRD soil data via API and insert into .apsim files (APIs not yet released)
+
+Note: DPIRD = Department of Primary Industries and Regional Development, Western Australia. See https://www.agric.wa.gov.au/web-apis 
+
