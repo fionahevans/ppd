@@ -13,4 +13,6 @@ for (i in 1:nrow(STATIONS)){
 
 
 i <- which(STATIONS$STATION_NAME == "MERREDIN")
-weather <- getPPD(STATIONS$SITE_NO[i], "19750101", "20171231", username="MUEVANS", password="FIONA6151")
+weather <- getPPD(STATIONS$SITE_NO[i], "19000101", "20171231", username="MUEVANS", password="FIONA6151")
+
+

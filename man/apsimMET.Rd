@@ -4,7 +4,7 @@
 \alias{apsimMET}
 \title{Convert PPD data to APSIM .met file}
 \usage{
-apsimMET(id, start, end, username, password)
+apsimMET(id, weather, fileName = "weather.met")
 }
 \arguments{
 \item{id}{Weather station ID.}

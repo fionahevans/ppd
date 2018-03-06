@@ -31,6 +31,8 @@ getPPD <- function(id, start, end, username, password) {
   # ditch the header
   lines <- lines[-c(1:49)]
   
+  if(lines[1] ==  "\" \"") lines <- lines[-1]
+  
   h1 <- unlist(strsplit(lines[1], "\\s+"))
   
   mat <- matrix(unlist(strsplit(lines[3:length(lines)], "\\s+")), byrow=T, ncol=length(h1))
