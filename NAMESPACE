@@ -2,6 +2,9 @@
 
 export()
 export(getClimatology)
+export(getDPIRDdaily)
+export(getDPIRDhourlyByYear)
+export(getDPIRDstations)
 export(getPPD)
 export(nearestStations)
 export(ppd2apsimMET)

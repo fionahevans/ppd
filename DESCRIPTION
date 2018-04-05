@@ -6,14 +6,16 @@ Author: Fiona H Evans <fiona.h.evans@graduate.uwa.edu.au>
 Maintainer: Fiona H Evans <fiona.h.evans@graduate.uwa.edu.au>
 Depends:
     R (>= 3.0.0),
-    httr
+    httr,
+    jsonlite
 Imports:
 Description: This package contains functions for accessing & handling SILO Patched Point weather data.
-License: GPL (>= 2)
+License: MIT
 URL: http://www.r-project.org
 LazyData: TRUE
 Collate:
   'apsimMET.R'
+  'getDPIRD.R'
   'getPPD.R'
   'getClimatology.R'
   'nearestStations.R'
