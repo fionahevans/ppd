@@ -8,7 +8,7 @@ Includes a data frame STATIONS containing weather stations with good long term r
 Functions:
 * nearestStations: Find the nearest stations (in STATIONS) to a given longitude and latitude
 * getPPD: Download PPD data fromSILO and store as a data frame
-* apsimMET: Convert downloaded PPD data to APSIM .met file
+* ppd2apsimMET: Convert downloaded PPD data to APSIM .met file
 
 Planned future functionality:
 * function getClimatology is in development - do not use
