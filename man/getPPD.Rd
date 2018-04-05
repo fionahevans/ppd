@@ -13,9 +13,9 @@ getPPD(id, start, end, username, password)
 
 \item{end}{End date (String YYYYmmdd).}
 
-\item{username}{SILO username (available from https://www.longpaddock.qld.gov.au/silo/).}
+\item{username}{SILO username (available from https://legacy.longpaddock.qld.gov.au/silo/).}
 
-\item{password}{SILO password (available form https://www.longpaddock.qld.gov.au/silo/).}
+\item{password}{SILO password (available form https://legacy.longpaddock.qld.gov.au/silo/).}
 }
 \value{
 Data frame containing daily weather data.

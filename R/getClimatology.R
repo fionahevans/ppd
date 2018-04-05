@@ -5,8 +5,8 @@
 #' @param id Weather station ID.
 #' @param start.year Start year.
 #' @param end.year End year.
-#' @param username SILO username (available from https://www.longpaddock.qld.gov.au/silo/).
-#' @param password SILO password (available form https://www.longpaddock.qld.gov.au/silo/).
+#' @param username SILO username (available from https://legacy.longpaddock.qld.gov.au/silo/).
+#' @param password SILO password (available form https://legacy.longpaddock.qld.gov.au/silo/).
 #'
 #' @author Fiona Evans
 #'

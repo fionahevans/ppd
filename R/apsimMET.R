@@ -11,7 +11,7 @@
 #' 
 #' @return Data frame containing daily weather data.
 #' @export
-apsimMET <- function(id, weather, fileName="weather.met") {
+ppd2apsimMET <- function(id, weather, fileName="weather.met") {
   
   i <- which(STATIONS$SITE_NO == id)
   
