@@ -17,7 +17,7 @@ getDPIRDhourlyByYear(id, year, apiKey)
 Data frame containing daily weather data.
 }
 \description{
-Download DPIRD daily weather data (may contain missing values)
+Download DPIRD daily weather data for a period of one year (may contain missing values)
 }
 \author{
 Fiona Evans

@@ -1,0 +1,7 @@
+
+APSIM Fortran code:
+http://apsrunet.apsim.info/websvn/listing.php?repname=apsim&path=%2Ftrunk%2FModel%2FSoilN%2F&#ad62a2cc1aaae329fdd497aede90d581d
+
+ApsimX Csharp code:
+https://github.com/APSIMInitiative/ApsimX/tree/master/Models/Core
+

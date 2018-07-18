@@ -9,7 +9,7 @@ ppd2apsimMET(id, weather, fileName = "weather.met")
 \arguments{
 \item{id}{Weather station ID.}
 
-\item{weather}{data frame containind PPD weather data downloaded using getPPD().}
+\item{weather}{data frame containing PPD weather data downloaded using getPPD().}
 
 \item{fileName}{name of .met file to write output to.}
 }

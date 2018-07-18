@@ -2,16 +2,14 @@
 % Please edit documentation in R/getDPIRD.R
 \name{getDPIRDdaily}
 \alias{getDPIRDdaily}
-\title{Download DPIRD daily weather data (may contain missing values)}
+\title{Download DPIRD daily weather data for one year (may contain missing values)}
 \usage{
-getDPIRDdaily(id, start, end, apiKey)
+getDPIRDdaily(id, year, username, password)
 }
 \arguments{
 \item{id}{Weather station ID.}
 
-\item{start}{Start date (String YYYYmmdd).}
-
-\item{end}{End date (String YYYYmmdd).}
+\item{year}{Year (numeric YYYY).}
 
 \item{apiKey}{API key (available from https://www.agric.wa.gov.au/web-apis).}
 }
@@ -19,7 +17,7 @@ getDPIRDdaily(id, start, end, apiKey)
 Data frame containing daily weather data.
 }
 \description{
-Download DPIRD daily weather data (may contain missing values)
+Download DPIRD daily weather data for one year (may contain missing values).
 }
 \author{
 Fiona Evans
