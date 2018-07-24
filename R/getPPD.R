@@ -21,24 +21,29 @@ getPPD <- function(id, start, end, silo.apiKey) {
   
   # Get 2016 growing season rainfall 
   httr::set_config( config( ssl_verifypeer = 0L ))
-  g <- GET(paste0(url, "&start=", from,  "&finish=", to,  "&station=", id,  "&format=alldata"))
+  g <- GET(paste0(url, "&start=", start,  "&finish=", end,  "&station=", id,  "&format=alldata"))
   
-  all.lines <- content(g, "text")
-  # split into lines
-  lines <- unlist(strsplit(all.lines, "\n"))
-  # ditch the header
-  lines <- lines[-c(1:49)]
+  if (g$status_code != 200 ) ret <- NULL
   
-  if(lines[1] ==  "\" \"") lines <- lines[-1]
+  if (g$status_code == 200) {
   
-  h1 <- unlist(strsplit(lines[1], "\\s+"))
-  
-  mat <- matrix(unlist(strsplit(lines[3:length(lines)], "\\s+")), byrow=T, ncol=length(h1))
-  ret <- data.frame(mat)
-  names(ret) <- h1
-  ret$Date <- as.Date(ret$Date, "%Y%m%d")
-  ret$Date2 <- NULL
-  for (i in 2:ncol(ret)) ret[,i] <- as.numeric(as.character(ret[,i]))
+    all.lines <- content(g, "text")
+    # split into lines
+    lines <- unlist(strsplit(all.lines, "\n"))
+    # ditch the header
+    lines <- lines[-c(1:49)]
+    
+    if(lines[1] ==  '\" \"') lines <- lines[-1]
+    
+    h1 <- unlist(strsplit(lines[1], "\\s+"))
+    
+    mat <- matrix(unlist(strsplit(lines[3:length(lines)], "\\s+")), byrow=T, ncol=length(h1))
+    ret <- data.frame(mat)
+    names(ret) <- h1
+    ret$Date <- as.Date(ret$Date, "%Y%m%d")
+    ret$Date2 <- NULL
+    for (i in 2:ncol(ret)) ret[,i] <- as.numeric(as.character(ret[,i]))
+  }
   ret
 }
 
