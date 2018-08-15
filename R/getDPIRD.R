@@ -11,9 +11,10 @@
 #' @return Data frame containing list oif weather stations and metadata..
 #' @export
 getDPIRDstations <- function(apiKey){
-  g <- GET(paste0("https://api.agric.wa.gov.au/v1/weatherstations.json?api_key=", apiKey))
+  g <- fromJSON(url(paste0("https://api.agric.wa.gov.au/v1/weatherstations.json?api_key=", 
+                           apiKey)))
   
-  stations <- fromJSON(content(g, "text"))$result
+  stations <- g$result
   
   stations$latitude <- as.numeric(stations$latitude)
   stations$longitude <- as.numeric(stations$longitude)
@@ -37,18 +38,25 @@ getDPIRDstations <- function(apiKey){
 #' 
 #' @return Data frame containing daily weather data.
 #' @export
-getDPIRDdaily <- function(id, year, username, password){
+getDPIRDdaily <- function(id, year, apiKey){
   
   from <- paste0(year, "-01-01")
   to <- paste0(year, "-12-31")
     
-  g <- GET(paste0("https://api.agric.wa.gov.au/v1/weatherstations/dailysummary.json?stationId=", id, 
+  g <- fromJSON(url(paste0("https://api.agric.wa.gov.au/v1/weatherstations/dailysummary.json?stationId=", id, 
                   "&fromDate=", from, 
                   "&toDate=", to, 
-                  "&api_key=", apiKey))
-  result <- fromJSON(content(g, "text"))$result
+                  "&api_key=", apiKey)))
+  result <- g$result
   
-  for (j in c(3,5,7,8,10,12,13,14,16,18,19,20,21,22,23,25,27,28,30,
+  if (length(result == 0)) {
+    result <- NULL
+    print(paste("No data available for station id", id, "in year", year, ".\n"))
+    print("Use getDPIRDstations() to check station start dates.")
+  }
+  
+  if (length(result) > 0){
+    for (j in c(3,5,7,8,10,12,13,14,16,18,19,20,21,22,23,25,27,28,30,
               33,35,37,38,40,42,43)) result[, j] <- as.numeric(result[,j])
   
   result$year <- as.numeric(substr(result$record_date, 1, 4))
@@ -56,6 +64,8 @@ getDPIRDdaily <- function(id, year, username, password){
   result$day <- as.numeric(substr(result$record_date, 9, 10))
   
   result$date <- as.Date(result$record_date, "%Y-%m-%d")
+  
+  }
   
   return(result)
 }
@@ -149,31 +159,31 @@ getDPIRDhourlyByYear <- function(id, year, apiKey) {
   
   from <- paste0(year, "-01-01")
   to <- paste0(year, "-02-28")
-  g <- GET(paste0("https://api.agric.wa.gov.au/v1/weatherstations/hourrecordings.json?stationId=", id, 
+  g <- fromJSON(url(paste0("https://api.agric.wa.gov.au/v1/weatherstations/hourrecordings.json?stationId=", id, 
                   "&fromDate=", from, 
                   "&toDate=", to, 
-                  "&api_key=", apiKey))
-  result <- rbind(result, fromJSON(content(g, "text"))$result)
+                  "&api_key=", apiKey)))
+  result <- rbind(result, g$result)
   
   from <- paste0(year, "-03-01")
   to <- paste0(year, "-04-30")
-  g <- GET(paste0("https://api.agric.wa.gov.au/v1/weatherstations/hourrecordings.json?stationId=", id, 
-                  "&fromDate=", from, 
-                  "&toDate=", to, 
-                  "&api_key=", apiKey))
-  result <- rbind(result, fromJSON(content(g, "text"))$result)
+  g <- fromJSON(url(paste0("https://api.agric.wa.gov.au/v1/weatherstations/hourrecordings.json?stationId=", id, 
+                           "&fromDate=", from, 
+                           "&toDate=", to, 
+                           "&api_key=", apiKey)))
+  result <- rbind(result, g$result)
   
   from <- paste0(year, "-05-01")
   to <- paste0(year, "-06-30")
-  g <- GET(paste0("https://api.agric.wa.gov.au/v1/weatherstations/hourrecordings.json?stationId=", id, 
-                  "&fromDate=", from, 
-                  "&toDate=", to, 
-                  "&api_key=", apiKey))
-  result <- rbind(result, fromJSON(content(g, "text"))$result)
+  g <- fromJSON(url(paste0("https://api.agric.wa.gov.au/v1/weatherstations/hourrecordings.json?stationId=", id, 
+                           "&fromDate=", from, 
+                           "&toDate=", to, 
+                           "&api_key=", apiKey)))
+  result <- rbind(result, g$result)
   
   from <- paste0(year, "-07-01")
   to <- paste0(year, "-08-31")
-  g <- GET(paste0("https://api.agric.wa.gov.au/v1/weatherstations/hourrecordings.json?stationId=", id, 
+  g <- url(paste0("https://api.agric.wa.gov.au/v1/weatherstations/hourrecordings.json?stationId=", id, 
                   "&fromDate=", from, 
                   "&toDate=", to, 
                   "&api_key=", apiKey))
@@ -181,19 +191,19 @@ getDPIRDhourlyByYear <- function(id, year, apiKey) {
   
   from <- paste0(year, "-09-01")
   to <- paste0(year, "-10-31")
-  g <- GET(paste0("https://api.agric.wa.gov.au/v1/weatherstations/hourrecordings.json?stationId=", id, 
-                  "&fromDate=", from, 
-                  "&toDate=", to, 
-                  "&api_key=", apiKey))
-  result <- rbind(result, fromJSON(content(g, "text"))$result)
+  g <- fromJSON(url(paste0("https://api.agric.wa.gov.au/v1/weatherstations/hourrecordings.json?stationId=", id, 
+                           "&fromDate=", from, 
+                           "&toDate=", to, 
+                           "&api_key=", apiKey)))
+  result <- rbind(result, g$result)
   
   from <- paste0(year, "-11-01")
   to <- paste0(year, "-12-31")
-  g <- GET(paste0("https://api.agric.wa.gov.au/v1/weatherstations/hourrecordings.json?stationId=", id, 
-                  "&fromDate=", from, 
-                  "&toDate=", to, 
-                  "&api_key=", apiKey))
-  result <- rbind(result, fromJSON(content(g, "text"))$result)
+  g <- fromJSON(url(paste0("https://api.agric.wa.gov.au/v1/weatherstations/hourrecordings.json?stationId=", id, 
+                           "&fromDate=", from, 
+                           "&toDate=", to, 
+                           "&api_key=", apiKey)))
+  result <- rbind(result, g$result)
   
   data <- result
   

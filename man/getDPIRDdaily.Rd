@@ -4,7 +4,7 @@
 \alias{getDPIRDdaily}
 \title{Download DPIRD daily weather data for one year (may contain missing values)}
 \usage{
-getDPIRDdaily(id, year, username, password)
+getDPIRDdaily(id, year, apiKey)
 }
 \arguments{
 \item{id}{Weather station ID.}
