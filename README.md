@@ -12,6 +12,9 @@ Functions:
 * getDPIRDstations: Download list of DPIRD weather stations
 * getDPIRDdaily: Download DPIRD daily weather data for one year (may contain missing values)
 * getDPIRDhourlyByYear: Download DPIRD daily weather data for a period of one year (may contain missing values)
+* getSCIENCEstations: Download list of DPIRD SCIENCE weather stations - contains Patched Point and DPIRD automatic weather stations
+* getRTD: Download 'rainfall to date' data using DPIRD SCIENCE API
+* getSoilWater: Download  'soil water' data using DPIRD SCIENCE API
 
 Planned future functionality:
 * function getClimatology is in development - do not use

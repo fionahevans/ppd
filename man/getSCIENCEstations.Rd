@@ -13,7 +13,7 @@ getSCIENCEstations(apiKey)
 Data frame containing list of weather stations and metadata..
 }
 \description{
-Download list of DPIRD SCIENCE weather stations - contains Patched Poitn and DPIRD
+Download list of DPIRD SCIENCE weather stations - contains Patched Point and DPIRD
 automatic weather stations
 }
 \author{
