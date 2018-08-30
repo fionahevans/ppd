@@ -75,7 +75,8 @@ getRTD <- function(station.id, forecastDate, summerStartDate, growingSeasonStart
   # Rainfall projections based on climatology
   proj <- proj2df(res$data$projectedSeasonalRainfall)
   # Historical rainlfall climatology
-  hist <- hist2df(res$data$historicalRainfall)
+  hist <- hist2df(res$data$historicalRainfall, growingSeasonStartDate,
+                  growingSeasonEndDate)
   
   tmp <- merge(rain, hist, by="date", all=T)
   data <- merge(tmp, proj, by="date", all=T)
@@ -94,14 +95,17 @@ proj2df <- function(tmp) {
   dec
 }
 
-hist2df <- function(tmp) {
+hist2df <- function(tmp, growingSeasonStartDate,
+                    growingSeasonEndDate) {
   dec <- matrix(ncol=9, nrow=length(tmp$deciles)) 
   for (i in 1:nrow(dec)) {
     dec[i, ] <- tmp$deciles[[i]][, 2]
   }
   dec <- as.data.frame(dec)
   names(dec) <- paste0("decile", c(1:9))
-  dec$date <- as.Date(paste0(year, "-", tmp$date), "%Y-%m-%d")
+  dec$date <- seq(from=as.Date(growingSeasonStartDate, "%Y-%m-%d"),
+                  to=as.Date(growingSeasonEndDate, "%Y-%m-%d"), by = "1 day")
+  #dec$date <- as.Date(paste0(year, "-", tmp$date), "%Y-%m-%d")
   dec
 }
 
@@ -115,7 +119,7 @@ hist2df <- function(tmp) {
 #' @param station.id Station id
 #' @param startDate Summer start date (sw is initialised at zero); string "YYYY-mm-dd"
 #' @param endDate End date; string "YYYY-mm-dd"
-#' @param soilType Soil type; string element of c("gravel, "shallow-soil", "sand", "sandy-earth", "shallow-sandy-duplex", "deep-sand-duplex", "shallow-loamy-duplex", "deep-loamy-"duplex", "loamy-earth", "clay")
+#' @param soilType Soil type; string element of c("gravel", "shallow-soil", "sand", "sandy-earth", "shallow-sandy-duplex", "deep-sand-duplex", "shallow-loamy-duplex", "deep-loamy-duplex", "loamy-earth", "clay")
 #' @param faoInitialisationDays number of days in crop initialisation, used in calculation of crop evapotranspiration
 #' @param faoDevelopmentDays number of days in crop development period, used in calculation of crop evapotranspiration 
 #' @param faoMidSeasonDays number of days in crop mid-season period, used in calculation of crop evapotranspiration

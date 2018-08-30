@@ -2,8 +2,8 @@ Package: ppd
 Version: 1.0
 Date: 2017-08-28
 Title: Functions for accessing & handling SILO Patched Point weather data.
-Author: Fiona H Evans <fiona.h.evans@graduate.uwa.edu.au>
-Maintainer: Fiona H Evans <fiona.h.evans@graduate.uwa.edu.au>
+Author: Fiona H Evans <fiona.evans@murdoch.edu.au>
+Maintainer: Fiona H Evans <fiona.evans@murdoch.edu.au>
 Depends:
     R (>= 3.0.0),
     httr,
@@ -21,4 +21,4 @@ Collate:
   'getSCIENCE.R'
   'nearestStations.R'
   'STATIONS.R'
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
