@@ -11,6 +11,8 @@ Functions:
 * ppd2apsimMET: Convert downloaded PPD data to APSIM .met file
 * getDPIRDstations: Download list of DPIRD weather stations
 * getDPIRDdaily: Download DPIRD daily weather data for one year (may contain missing values)
+* getDPIRDhourlyByDay: Download DPIRD daily weather data for a period of one day (may contain missing values)
+* getDPIRDhourlyByMonth: Download DPIRD daily weather data for a period of one month (may contain missing values)
 * getDPIRDhourlyByYear: Download DPIRD daily weather data for a period of one year (may contain missing values)
 * getSCIENCEstations: Download list of DPIRD SCIENCE weather stations - contains Patched Point and DPIRD automatic weather stations
 * getRTD: Download 'rainfall to date' data using DPIRD SCIENCE API

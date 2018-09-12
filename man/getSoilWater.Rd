@@ -6,11 +6,13 @@
 \usage{
 getSoilWater(station.id, startDate, endDate,
   soilType = "shallow-sandy-duplex", faoInitialisationDays = 15,
-  faoDevelopmentDays = 20, faoMidSeasonDays = 80, faoLateSeasonDays = 45,
-  faoInitialisationCropCoefficient = 0.05,
-  faoDevelopmentCropCoefficient = 0.1, faoMidSeasonCropCoefficient = 0.45,
-  faoLateSeasonCropCoefficient = 0.2, faoBreakOfSeason3Days25April = 15,
-  faoBreakOfSeason3Days5June = 5, apiKey)
+  faoDevelopmentDays = 20, faoMidSeasonDays = 80,
+  faoLateSeasonDays = 45, faoInitialisationCropCoefficient = 0.05,
+  faoDevelopmentCropCoefficient = 0.1,
+  faoMidSeasonCropCoefficient = 0.45,
+  faoLateSeasonCropCoefficient = 0.2,
+  faoBreakOfSeason3Days25April = 15, faoBreakOfSeason3Days5June = 5,
+  apiKey)
 }
 \arguments{
 \item{station.id}{Station id}
@@ -19,7 +21,7 @@ getSoilWater(station.id, startDate, endDate,
 
 \item{endDate}{End date; string "YYYY-mm-dd"}
 
-\item{soilType}{Soil type; string element of c("gravel, "shallow-soil", "sand", "sandy-earth", "shallow-sandy-duplex", "deep-sand-duplex", "shallow-loamy-duplex", "deep-loamy-"duplex", "loamy-earth", "clay")}
+\item{soilType}{Soil type; string element of c("gravel", "shallow-soil", "sand", "sandy-earth", "shallow-sandy-duplex", "deep-sand-duplex", "shallow-loamy-duplex", "deep-loamy-duplex", "loamy-earth", "clay")}
 
 \item{faoInitialisationDays}{number of days in crop initialisation, used in calculation of crop evapotranspiration}
 

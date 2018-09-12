@@ -144,6 +144,60 @@ fillDPIRDdaily <- function(id, year, weather, username, password){
 #' Download DPIRD daily weather data for a period of one year (may contain missing values)
 #'
 #' @param id Weather station ID.
+#' @param start Start date (Date).
+#' @param end End date (Date).
+#' @param apiKey API key (available from https://www.agric.wa.gov.au/web-apis).
+#'
+#' @author Fiona Evans
+#' 
+#' @return Data frame containing daily weather data.
+#' @export
+getDPIRDhourly <- function(id, start, end, apiKey) {
+  # Get hourly data for the year 
+  # Note: "Hour recording date ranges are restricted to two months at a time."
+  
+  end <- min(end, as.Date(Sys.time()))
+  data <- NULL
+  
+  # Two months after start at a time
+  this <- min(seq(from=start, by="month", length.out=3)[3]-1, end)
+  while (this <= end) {
+    from <- format(start, "%Y-%m-%d")
+    to <- format(this, "%Y-%m-%d")
+    g <- fromJSON(url(paste0("https://api.agric.wa.gov.au/v1/weatherstations/hourrecordings.json?stationId=", id, 
+                             "&fromDate=", from, 
+                             "&toDate=", to, 
+                             "&api_key=", apiKey)))
+    #print(g)
+    data <- rbind(data, g$result)
+    start <- this+1
+    this <- seq(from=start, by="month", length.out=3)[3]-1
+  }
+  
+  for (j in c(3:22, 24:30)) data[, j] <- as.numeric(data[,j])
+  
+  data$year <- as.numeric(substr(data$record_datetime, 1, 4))
+  data$month <- as.numeric(substr(data$record_datetime, 6, 7))
+  data$day <- as.numeric(substr(data$record_datetime, 9, 10))
+  data$hour <- as.numeric(substr(data$record_datetime, 12, 13))
+  
+  #print(names(data))
+  
+  data$date <- as.Date(data$record_datetime, "%Y-%m-%d %H:%M:%S")
+  data$record_datetime <- as.POSIXct(data$record_datetime)
+  
+  #cat("wtf\n")
+  
+  return(data)
+}
+
+
+
+#' Download DPIRD hourly weather data for a period of one year (may contain missing values)
+#' 
+#' Download DPIRD daily weather data for a period of one year (may contain missing values)
+#'
+#' @param id Weather station ID.
 #' @param year Year (numeric YYYY).
 #' @param apiKey API key (available from https://www.agric.wa.gov.au/web-apis).
 #'
@@ -207,7 +261,7 @@ getDPIRDhourlyByYear <- function(id, year, apiKey) {
   
   data <- result
   
-  for (j in c(3:22, 24:30)) result[, j] <- as.numeric(result[,j])
+  for (j in c(3:22, 24:30)) data[, j] <- as.numeric(data[,j])
   
   data$year <- as.numeric(substr(data$record_datetime, 1, 4))
   data$month <- as.numeric(substr(data$record_datetime, 6, 7))
@@ -215,6 +269,88 @@ getDPIRDhourlyByYear <- function(id, year, apiKey) {
   data$hour <- as.numeric(substr(data$record_datetime, 12, 13))
   
   data$date <- as.Date(data$record_datetime, "%Y-%m-%d %H:%M:%S")
+  data$record_datetime <- as.POSIXct(data$record_datetime)
   
   return(data)
 }
+
+
+#' Download DPIRD hourly weather data for a period of one month (may contain missing values)
+#' 
+#' Download DPIRD daily weather data for a period of one month (may contain missing values)
+#'
+#' @param id Weather station ID.
+#' @param year Year (numeric YYYY).
+#' @param month Month (numeric m).
+#' @param apiKey API key (available from https://www.agric.wa.gov.au/web-apis).
+#'
+#' @author Fiona Evans
+#' 
+#' @return Data frame containing daily weather data.
+#' @export
+getDPIRDhourlyByMonth <- function(id, year, month, apiKey) {
+  
+  m <- ifelse(month < 10, paste0("0", month), month)
+  
+  days <- c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+  
+  from <- paste0(year, "-", m, "-01")
+  to <- paste0(year, "-", m, "-", days[month])
+  g <- fromJSON(url(paste0("https://api.agric.wa.gov.au/v1/weatherstations/hourrecordings.json?stationId=", id, 
+                           "&fromDate=", from, 
+                           "&toDate=", to, 
+                           "&api_key=", apiKey)))
+  data <- g$result
+  
+  for (j in c(3:22, 24:30)) data[, j] <- as.numeric(data[,j])
+  
+  data$year <- as.numeric(substr(data$record_datetime, 1, 4))
+  data$month <- as.numeric(substr(data$record_datetime, 6, 7))
+  data$day <- as.numeric(substr(data$record_datetime, 9, 10))
+  data$hour <- as.numeric(substr(data$record_datetime, 12, 13))
+  
+  data$date <- as.Date(data$record_datetime, "%Y-%m-%d %H:%M:%S")
+  data$record_datetime <- as.POSIXct(data$record_datetime)
+  
+  return(data)
+}
+
+#' Download DPIRD hourly weather data for a period of one day (may contain missing values)
+#' 
+#' Download DPIRD daily weather data for a period of one day (may contain missing values)
+#'
+#' @param id Weather station ID.
+#' @param year Year (numeric YYYY).
+#' @param month Month (numeric m).
+#' @param day Day (numeric d).
+#' @param apiKey API key (available from https://www.agric.wa.gov.au/web-apis).
+#'
+#' @author Fiona Evans
+#' 
+#' @return Data frame containing daily weather data.
+#' @export
+getDPIRDhourlyByDay <- function(id, year, month, day, apiKey) {
+  
+  m <- ifelse(month < 10, paste0("0", month), month)
+  d <- ifelse(day < 10, paste0("0", day), day)
+  
+  from <- to <- paste0(year, "-", m, "-", d)
+  g <- fromJSON(url(paste0("https://api.agric.wa.gov.au/v1/weatherstations/hourrecordings.json?stationId=", id, 
+                           "&fromDate=", from, 
+                           "&toDate=", to, 
+                           "&api_key=", apiKey)))
+  data <- g$result
+  
+  for (j in c(3:22, 24:30)) data[, j] <- as.numeric(data[,j])
+  
+  data$year <- as.numeric(substr(data$record_datetime, 1, 4))
+  data$month <- as.numeric(substr(data$record_datetime, 6, 7))
+  data$day <- as.numeric(substr(data$record_datetime, 9, 10))
+  data$hour <- as.numeric(substr(data$record_datetime, 12, 13))
+  
+  data$date <- as.Date(data$record_datetime, "%Y-%m-%d %H:%M:%S")
+  data$record_datetime <- as.POSIXct(data$record_datetime)
+  
+  return(data)
+}
+
