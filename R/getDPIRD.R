@@ -49,7 +49,7 @@ getDPIRDdaily <- function(id, year, apiKey){
                   "&api_key=", apiKey)))
   result <- g$result
   
-  if (length(result == 0)) {
+  if (length(result) == 0) {
     result <- NULL
     print(paste("No data available for station id", id, "in year", year, ".\n"))
     print("Use getDPIRDstations() to check station start dates.")
@@ -84,19 +84,21 @@ distance <- function (x1, y1, x2, y2) {return(sqrt((x1-x2)^2 + (y1-y2)^2))}
 #' @param id Weather station ID.
 #' @param year Year.
 #' @param weather data frame containing DPIRD weather data downloaded using getDPIRDdaily().
-#' @param username SILO username (available from https://legacy.longpaddock.qld.gov.au/silo/).
-#' @param password SILO password (available form https://legacy.longpaddock.qld.gov.au/silo/).
+#' @param silo.apiKey SILO API key (available from https://silo.longpaddock.qld.gov.au/).
 #' 
 #'
 #' @author Fiona Evans
 #' 
-#' @return Data frame containing daily weather data.
+#' @return Data frame containing filled daily weather data.
 #' @export
-fillDPIRDdaily <- function(id, year, weather, username, password){
+fillDPIRDdaily <- function(id, year, weather, silo.apiKey){
   
   leap <- is.leapyear(year)
   
-  if ((!leap && nrow(weather) < 365) || (leap && nrow(weather) < 366)) {
+  if (nrow(weather) < as.numeric(difftime(weather$record_date[nrow(weather)], 
+                                          weather$record_date[1]))){
+  
+  #if ((!leap && nrow(weather) < 365) || (leap && nrow(weather) < 366)) {
     # Need to fill data
     
     # Find nearest PPD station
@@ -108,7 +110,7 @@ fillDPIRDdaily <- function(id, year, weather, username, password){
     ppd.id <- STATIONS[which(d == min(d)), "SITE_NO"]
     start <- format(weather[1, "date"], "%Y%m%d")
     end <- format(weather[nrow(weather), "date"], "%Y%m%d")
-    ppd.weather <- getPPD (ppd.id, start, end, username, password) 
+    ppd.weather <- getPPD(ppd.id, start, end, silo.apiKey) 
     
     # Create full data with NAs for missing days, and merge with weather
     days <- seq(weather[1, "date"], weather[nrow(weather), "date"], by="1 day")
