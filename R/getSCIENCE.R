@@ -81,6 +81,8 @@ getRTD <- function(station.id, forecastDate, summerStartDate, growingSeasonStart
                   growingSeasonEndDate)
   
   
+  
+  
   tmp <- merge(rain, hist, by="date", all=T)
   data <- merge(tmp, proj, by="date", all=T)
   
