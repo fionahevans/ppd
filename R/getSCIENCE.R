@@ -71,12 +71,15 @@ getRTD <- function(station.id, forecastDate, summerStartDate, growingSeasonStart
   # Rainfall and cumulative rainfall
   rain <- res$data$currentSeasonalRainfall
   rain$date <- as.Date(rain$date, "%Y-%m-%d")
+  rain <- subset(rain, date < as.Date(forecastDate, "%Y-%m-%d"))
   
   # Rainfall projections based on climatology
   proj <- proj2df(res$data$projectedSeasonalRainfall)
+  
   # Historical rainlfall climatology
   hist <- hist2df(res$data$historicalRainfall, growingSeasonStartDate,
                   growingSeasonEndDate)
+  hist <- subset(hist, date < as.Date(forecastDate, "%Y-%m-%d"))
   
   tmp <- merge(rain, hist, by="date", all=T)
   data <- merge(tmp, proj, by="date", all=T)

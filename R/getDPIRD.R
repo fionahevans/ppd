@@ -43,7 +43,7 @@ getDPIRDdaily <- function(id, year, apiKey){
   from <- paste0(year, "-01-01")
   to <- paste0(year, "-12-31")
     
-  g <- fromJSON(url(paste0("https://api.agric.wa.gov.au/v1/weatherstations/dailysummary.json?stationId=", id, 
+  g <- fromJSON(url(paste0("https://api.agric.wa.gov.au/v1/weatherstations/dailysummary.json?station_code=", id, 
                   "&fromDate=", from, 
                   "&toDate=", to, 
                   "&api_key=", apiKey)))
@@ -93,21 +93,43 @@ distance <- function (x1, y1, x2, y2) {return(sqrt((x1-x2)^2 + (y1-y2)^2))}
 #' @export
 fillDPIRDdaily <- function(id, year, weather, silo.apiKey){
   
+  
+  stations <- getDPIRDstations(dpird.apiKey)
   leap <- is.leapyear(year)
   
+  # Add start of year
+  if (weather$date[1] > as.Date(paste0(year, "-01-01"), "%Y-%m-%d")) {
+    weather <- rbind(rep(NA, ncol(weather)), weather)
+    weather$date[1] <- as.Date(paste0(year, "-01-01"), "%Y-%m-%d") 
+    weather$record_date[1] <- paste0(year, "-01-01")
+    weather$year[1] <- year
+    weather$month[1] <- 1
+    weather$day[1] <- 1
+    weather$station_id[1] <- id
+  }
+  
+  # Look for empty last row
+  if (weather[nrow(weather), "date"] == as.Date(Sys.time()) 
+      && is.na(weather[nrow(weather), "rain"])) weather <- weather[-nrow(weather),]
+  
+  
+  # Check to see if we need to fill data
   if (nrow(weather) < as.numeric(difftime(weather$record_date[nrow(weather)], 
                                           weather$record_date[1]))){
   
   #if ((!leap && nrow(weather) < 365) || (leap && nrow(weather) < 366)) {
-    # Need to fill data
+    
     
     # Find nearest PPD station
+    distance <- function (x1, y1, x2, y2) {return(sqrt((x1-x2)^2 + (y1-y2)^2))}
+    
     i <- which(stations$station_id == id)
     lat <- stations[i, "latitude"]
     lon <- stations[i, "longitude"]
     d <- rep(NA, nrow(STATIONS))
     for (j in 1:nrow(STATIONS)) d[j] <- distance(lon, lat, STATIONS[j, "LONGITUDE"], STATIONS[j, "LATITUDE"])
     ppd.id <- STATIONS[which(d == min(d)), "SITE_NO"]
+    
     start <- format(weather[1, "date"], "%Y%m%d")
     end <- format(weather[nrow(weather), "date"], "%Y%m%d")
     ppd.weather <- getPPD(ppd.id, start, end, silo.apiKey) 
