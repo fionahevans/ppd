@@ -79,7 +79,7 @@ getRTD <- function(station.id, forecastDate, summerStartDate, growingSeasonStart
   # Historical rainlfall climatology
   hist <- hist2df(res$data$historicalRainfall, growingSeasonStartDate,
                   growingSeasonEndDate)
-  hist <- subset(hist, date < as.Date(forecastDate, "%Y-%m-%d"))
+  
   
   tmp <- merge(rain, hist, by="date", all=T)
   data <- merge(tmp, proj, by="date", all=T)
