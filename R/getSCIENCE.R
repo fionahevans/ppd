@@ -80,9 +80,6 @@ getRTD <- function(station.id, forecastDate, summerStartDate, growingSeasonStart
   hist <- hist2df(res$data$historicalRainfall, growingSeasonStartDate,
                   growingSeasonEndDate)
   
-  
-  
-  
   tmp <- merge(rain, hist, by="date", all=T)
   data <- merge(tmp, proj, by="date", all=T)
   

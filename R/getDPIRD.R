@@ -91,7 +91,7 @@ distance <- function (x1, y1, x2, y2) {return(sqrt((x1-x2)^2 + (y1-y2)^2))}
 #' 
 #' @return Data frame containing filled daily weather data.
 #' @export
-fillDPIRDdaily <- function(id, year, weather, silo.apiKey){
+fillDPIRDdaily <- function(id, year, weather, dpird.apiKey, silo.apiKey){
   
   
   stations <- getDPIRDstations(dpird.apiKey)
@@ -241,7 +241,7 @@ getDPIRDhourlyByYear <- function(id, year, apiKey) {
                   "&fromDate=", from, 
                   "&toDate=", to, 
                   "&api_key=", apiKey)))
-  result <- rbind(result, g$result)
+  if (length(g$result) > 0) result <- rbind(result, g$result)
   
   from <- paste0(year, "-03-01")
   to <- paste0(year, "-04-30")
@@ -249,7 +249,7 @@ getDPIRDhourlyByYear <- function(id, year, apiKey) {
                            "&fromDate=", from, 
                            "&toDate=", to, 
                            "&api_key=", apiKey)))
-  result <- rbind(result, g$result)
+  if (length(g$result) > 0)  result <- rbind(result, g$result)
   
   from <- paste0(year, "-05-01")
   to <- paste0(year, "-06-30")
@@ -257,15 +257,15 @@ getDPIRDhourlyByYear <- function(id, year, apiKey) {
                            "&fromDate=", from, 
                            "&toDate=", to, 
                            "&api_key=", apiKey)))
-  result <- rbind(result, g$result)
+  if (length(g$result) > 0)  result <- rbind(result, g$result)
   
   from <- paste0(year, "-07-01")
   to <- paste0(year, "-08-31")
-  g <- url(paste0("https://api.agric.wa.gov.au/v1/weatherstations/hourrecordings.json?stationId=", id, 
+  g <- fromJSON(paste0("https://api.agric.wa.gov.au/v1/weatherstations/hourrecordings.json?stationId=", id, 
                   "&fromDate=", from, 
                   "&toDate=", to, 
                   "&api_key=", apiKey))
-  result <- rbind(result, fromJSON(content(g, "text"))$result)
+  if (length(g$result) > 0)  result <- rbind(result, g$result)
   
   from <- paste0(year, "-09-01")
   to <- paste0(year, "-10-31")
@@ -273,7 +273,7 @@ getDPIRDhourlyByYear <- function(id, year, apiKey) {
                            "&fromDate=", from, 
                            "&toDate=", to, 
                            "&api_key=", apiKey)))
-  result <- rbind(result, g$result)
+  if (length(g$result) > 0)  result <- rbind(result, g$result)
   
   from <- paste0(year, "-11-01")
   to <- paste0(year, "-12-31")
@@ -281,7 +281,7 @@ getDPIRDhourlyByYear <- function(id, year, apiKey) {
                            "&fromDate=", from, 
                            "&toDate=", to, 
                            "&api_key=", apiKey)))
-  result <- rbind(result, g$result)
+  if (length(g$result) > 0)  result <- rbind(result, g$result)
   
   data <- result
   
