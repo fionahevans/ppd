@@ -97,8 +97,9 @@ dpird2apsimMET <- function(id, weather, stations, fileName="weather.met") {
   sink(file=fileName)
   
   weather$DATE <- weather$date
-  weather$Year <- weather$year
+  weather$Year <- as.numeric(format(weather$DATE, "%Y"))
   weather$Day <- as.numeric(format(weather$DATE, "%j"))
+  weather$Month <- as.numeric(format(weather$DATE, "%m"))
   weather$Radn <- weather$total_solar/1000
   weather$T.Max <- weather$air_temp_max
   weather$T.Min <- weather$air_temp_min

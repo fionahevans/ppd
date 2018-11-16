@@ -85,17 +85,24 @@ distance <- function (x1, y1, x2, y2) {return(sqrt((x1-x2)^2 + (y1-y2)^2))}
 #' @param year Year.
 #' @param weather data frame containing DPIRD weather data downloaded using getDPIRDdaily().
 #' @param silo.apiKey SILO API key (available from https://silo.longpaddock.qld.gov.au/).
-#' 
+#' @param start Optional start date (class Date) from which to fill
+#' @param end Optional end date (class Date) to fill to - useful if you want to fill 
+#' the entire year. If start and end are omitted, the start and end dates in the input
+#' weather data frame are used.
 #'
 #' @author Fiona Evans
 #' 
 #' @return Data frame containing filled daily weather data.
 #' @export
-fillDPIRDdaily <- function(id, year, weather, dpird.apiKey, silo.apiKey){
+fillDPIRDdaily <- function(id, year, weather, dpird.apiKey, silo.apiKey,
+                           start=NULL, end=NULL){
   
   
   stations <- getDPIRDstations(dpird.apiKey)
   leap <- is.leapyear(year)
+  
+  if (is.null(start)) start <- weather[1, "date"]
+  if (is.null(end)) end <- weather[nrow(weather), "date"]
   
   # Add start of year
   if (weather$date[1] > as.Date(paste0(year, "-01-01"), "%Y-%m-%d")) {
@@ -114,8 +121,7 @@ fillDPIRDdaily <- function(id, year, weather, dpird.apiKey, silo.apiKey){
   
   
   # Check to see if we need to fill data
-  if (nrow(weather) < as.numeric(difftime(weather$record_date[nrow(weather)], 
-                                          weather$record_date[1]))){
+  if (nrow(weather) < as.numeric(difftime(end, start))){
   
   #if ((!leap && nrow(weather) < 365) || (leap && nrow(weather) < 366)) {
     
@@ -130,12 +136,17 @@ fillDPIRDdaily <- function(id, year, weather, dpird.apiKey, silo.apiKey){
     for (j in 1:nrow(STATIONS)) d[j] <- distance(lon, lat, STATIONS[j, "LONGITUDE"], STATIONS[j, "LATITUDE"])
     ppd.id <- STATIONS[which(d == min(d)), "SITE_NO"]
     
-    start <- format(weather[1, "date"], "%Y%m%d")
-    end <- format(weather[nrow(weather), "date"], "%Y%m%d")
-    ppd.weather <- getPPD(ppd.id, start, end, silo.apiKey) 
+    
+    if (is.null(start)) start <- weather[1, "date"]
+    if (is.null(end)) end <- weather[nrow(weather), "date"]
+    
+    ppd.weather <- getPPD(ppd.id, format(start, "%Y%m%d"), 
+                          format(end, "%Y%m%d"), silo.apiKey) 
     
     # Create full data with NAs for missing days, and merge with weather
-    days <- seq(weather[1, "date"], weather[nrow(weather), "date"], by="1 day")
+    
+    days <- seq(start, end, by="1 day")
+    
     d <- as.numeric(format(days, "%d"))
     m <- as.numeric(format(days, "%m"))
     y <- as.numeric(format(days, "%Y"))    
@@ -143,11 +154,12 @@ fillDPIRDdaily <- function(id, year, weather, dpird.apiKey, silo.apiKey){
     w <- merge(weather, full, by=c("date", "year", "month", "day"), all=T)
     
     # Index of missing days
-    indx <- which(is.na(w$rain))
+    indx <- which(apply(w, 1, function(x) sum(is.na(x))) > 0)
     
     # Copy in data for air_temp_min, air_temp_max, air_temp_ave, rain, total_solar, 
     # humidity_max, humidity_min, humidity_ave, evaporation
     
+    w[indx, "station_id"] <- id
     w[indx, "air_temp_min"] <- ppd.weather[indx, "T.Max"]
     w[indx, "air_temp_max"] <- ppd.weather[indx, "T.Min"]
     w[indx, "air_temp_ave"] <- (ppd.weather[indx, "T.Min"] + ppd.weather[indx, "T.Max"])/2
