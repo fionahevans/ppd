@@ -37,7 +37,7 @@ getPPD <- function(id, start, end, email) {
     # split into lines
     lines <- unlist(strsplit(all.lines, "\n"))
     # ditch the header
-    lines <- lines[-c(1:49)]
+    lines <- lines[-c(1:50)]
     
     if(lines[1] ==  '\" \"') lines <- lines[-1]
     
