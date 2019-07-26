@@ -1,7 +1,9 @@
 ppd:  R package containing functions for accessing SILO Patched Point weather data using their URL Web Service.
 ====================================================
 
-See https://silo.longpaddock.qld.gov.au/ for information on how to obtain an API key for accessing SILO data.
+Last updated 2019-07-26
+
+See https://longpaddock.qld.gov.au/silo/ for information on SILO Patched Point data.
 
 Includes a data frame STATIONS containing weather stations with good long term records in south west Western Australia.
 

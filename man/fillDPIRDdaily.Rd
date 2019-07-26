@@ -4,7 +4,8 @@
 \alias{fillDPIRDdaily}
 \title{Fill missing DPIRD daily weather data (for one year) with data from nearest PPD station.}
 \usage{
-fillDPIRDdaily(id, year, weather, username, password)
+fillDPIRDdaily(id, year, weather, dpird.apiKey, silo.apiKey,
+  start = NULL, end = NULL)
 }
 \arguments{
 \item{id}{Weather station ID.}
@@ -13,12 +14,16 @@ fillDPIRDdaily(id, year, weather, username, password)
 
 \item{weather}{data frame containing DPIRD weather data downloaded using getDPIRDdaily().}
 
-\item{username}{SILO username (available from https://legacy.longpaddock.qld.gov.au/silo/).}
+\item{silo.apiKey}{SILO API key (available from https://silo.longpaddock.qld.gov.au/).}
 
-\item{password}{SILO password (available form https://legacy.longpaddock.qld.gov.au/silo/).}
+\item{start}{Optional start date (class Date) from which to fill}
+
+\item{end}{Optional end date (class Date) to fill to - useful if you want to fill 
+the entire year. If start and end are omitted, the start and end dates in the input
+weather data frame are used.}
 }
 \value{
-Data frame containing daily weather data.
+Data frame containing filled daily weather data.
 }
 \description{
 Fill missing DPIRD daily weather data (for one year) with data from nearest PPD station.
