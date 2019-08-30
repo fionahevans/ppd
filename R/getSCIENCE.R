@@ -177,6 +177,9 @@ getSoilWater <- function(station.id, startDate, endDate,
   data <- res$data$soilWater
   if (!is.null(data)) {
     data$date <- as.Date(data$date, "%Y-%m-%d")
+  }
+  brk <- NULL
+  if (!is.null(res$data$breakOfSeason)) {
     brk <- as.Date(res$data$breakOfSeason, "%Y-%m-%d")
   }
   
